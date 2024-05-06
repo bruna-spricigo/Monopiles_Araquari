@@ -1,0 +1,490 @@
+#DATASHEET SCRIPT SISTEMA DE AQUISIÇÃO – CONJUNTO M3Rab
+#include <SoftwareSerial.h>
+#include "HX711-multi.h"
+#include "HX711.h"
+#include <Wire.h>
+#include <Adafruit_ADS1015.h>      
+#define ADC_16BIT_MAX 65535
+#define SSerialRX        10       	  //Serial Receive pin PWM
+#define SSerialTX        9         	  //Serial Transmit pin PWM
+#define SSerialTxControl 6         //RS485 Direction control HIGH /LOW PWM
+SoftwareSerial RS485Serial(SSerialRX, SSerialTX); // RX, TX
+HX711 scale0(A6, A5);                // HX711.DOUT pin #6 HX711.PD-SCK - pin #5 PWM
+HX711 scale1(A7, A5);                // HX711.DOUT pin #7 HX711.PD-SCK - pin #5 PWM
+HX711 scale2(A8, A5);                // HX711.DOUT pin #8 HX711.PD-SCK - pin #5 PWM
+HX711 scale3(A9, A5);                // HX711.DOUT pin #9 HX711.PD-SCK - pin #5 PWM
+HX711 scale4(A10, A5);               // HX711.DOUT pin #10 HX711.PD-SCK - pin #5 PWM
+HX711 scale5(A11, A5);               // HX711.DOUT pin #11 HX711.PD-SCK - pin #5 PWM
+HX711 scale6(A12, A5);               // HX711.DOUT pin #12 HX711.PD-SCK - pin #5 PWM
+HX711 scale7(A13, A5);               // HX711.DOUT pin #13 HX711.PD-SCK - pin #5 PWM
+HX711 scale8(A14, A5);               // HX711.DOUT pin #41 HX711.PD-SCK - pin #5 PWM
+HX711 scale9(A15, A5);               // HX711.DOUT pin #15 HX711.PD-SCK - pin #5 PWM
+HX711 scale10(A4, A5);               // HX711.DOUT pin #15 HX711.PD-SCK - pin #5 PWM
+
+#include <SD.h>                    // seta parâmetros cartao SD
+#include <SPI.h>
+int pinCS = 53;                    // pin CS vai ao 53
+SdFile meuArquivo;
+const int chipSelect = 5;          
+Adafruit_ADS1115 ads_rr (0x48);
+char aux[20];
+char bux[20];
+char cux[20];
+char dux[20];
+char eux[20];
+char fux[20];
+char gux[20];
+char hux[20];
+char iux[20];
+char jux[20];
+char kux[20];
+char lux[20];
+char mux[20];
+char nux[20];
+char oux[20];
+char pux[20];
+char qux[20];
+char rux[20];
+char sux[20];
+char tux[20];
+char uux[20];
+
+long valr1 = 0;        // define as variáveis para armazenar os dados
+long valr2 = 0;
+long valr3 = 0;
+long valr4 = 0;
+ 
+float valrr1 = 0.0;
+float valrr2 = 0.0;
+float valrr3 = 0.0;
+float valrr4 = 0.0;
+
+long x=0;
+float a=0.0; 
+long a1=0;                             // canal A variavel
+long a2=0;                             // canal A leitura zero fase setup
+float b=0.0;                           // canal B variavel
+long b1=0;                             // canal B leitura zero fase setup
+long b2=0;
+float c=0.0;                           // canal C variavel
+long c1=0;                             // canal C leitura zero fase setup
+long c2=0;
+float d=0.0;                           // canal D variavel
+long d1=0;                             // canal D leitura zero fase setup
+long d2=0;
+float e=0.0;                           // canal E variavel
+long e1=0;                             // canal E leitura zero fase setup
+long e2=0;
+float f=0.0;                           // canal F variavel
+long f1=0;                             // canal F leitura zero fase setup
+long f2=0;
+float g=0.0;                           // canal G variavel
+long g1=0;                             // canal G leitura zero fase setup
+long g2=0;
+float h=0.0;                           // canal H variavel
+long h1=0;                             // canal H leitura zero fase setup
+long h2=0;
+float i=0.0;                           // canal I variavel
+long i1=0;                             // canal I leitura zero fase setup
+long i2=0;
+float j=0.0;                           // canal J variavel
+long j1=0;                             // canal J leitura zero fase setup
+long j2=0;
+float k=0.0;                           // canal K variavel
+long k1=0;                             // canal K leitura zero fase setup
+long k2=0;
+float l=0.0;                           // canal L variavel
+long l1=0;                             // canal L leitura zero fase setup
+long l2=0;
+float m=0.0;                           // canal M variavel
+long m1=0;                             // canal M leitura zero fase setup
+long m2=0;
+float n=0.0;                           // canal N variavel
+long n1=0;                             // canal N leitura zero fase setup
+long n2=0;
+float o=0.0;                           // canal O variavel
+long o1=0;                             // canal O leitura zero fase setup
+long o2=0;
+float p=0.0;                           // canal P variavel
+long p1=0;                             // canal P leitura zero fase setup
+long p2=0;
+float q=0.0;                           // canal Q variavel
+long q1=0;                             // canal Q leitura zero fase setup
+long q2=0;
+float r=0.0;                           // canal R variavel
+long r1=0;                             // canal R leitura zero fase setup
+long r2=0;
+float s=0.0;                           // canal S variavel
+long s1=0;                             // canal S leitura zero fase setup
+long s2=0;
+float t=0.0;                           // canal T variavel
+long t1=0;                             // canal T leitura zero fase setup
+long t2=0;
+float u=0.0;                           // canal U variavel
+long u1=0;                             // canal U leitura zero fase setup
+long u2=0;
+
+const int MPU1 = 0x68;            // I2C address of the MPU-6050
+const int MPU2 = 0x69;            // I2C address of the MPU-6050
+int16_t AcX1, AcY1, AcZ1,AcX2, AcY2, AcZ2; 
+double time;
+double arx1, ary1, arz1,arx2, ary2, arz2;
+
+unsigned long int milli_time;
+int myTimeout = 150;                // mili segundos para RS485Serial.readString
+String string0, string1, string2, string3, string4, string5, string6, string7, string8, string9, string10;
+String string11, string12, string13, string14, string15, string16, string17, string18, string19, string20, string21;
+String string22, string23, string24, string25, string26, string27, string28, string29, string30, string31, string32, string33;
+String string34, string35, string36, string37;
+void setup()   
+{  
+  Wire.begin();
+
+  Wire.beginTransmission(MPU1);
+  Wire.write(0x6B);           // PWR_MGMT_1 register
+  Wire.write(0);              // set to zero (wakes up the MPU-6050)
+  Wire.endTransmission(true);
+  
+  Wire.beginTransmission(MPU2);
+  Wire.write(0x6B);           // PWR_MGMT_1 register
+  Wire.write(0);              // set to zero (wakes up the MPU-6050)
+  Wire.endTransmission(true); 
+ 
+  Serial.begin(9600); 
+  ads_rr.begin();
+  ads_rr.setGain(GAIN_TWOTHIRDS);         //  2/3x gain +/- 6.144 V; 1 bit = 0.1875mV  
+  
+  pinMode(SSerialTxControl, OUTPUT);  
+  pinMode(pinCS, OUTPUT);
+
+  if(SD.begin(chipSelect))          // inicializa cartao memoria
+  {
+  Serial.println("1");
+  }
+  else
+  {
+  Serial.println("1965");
+  } 
+
+scale0.set_gain(128);
+a1=(scale0.read_average(15));
+delay(100);
+scale0.set_gain(32);
+b1=(scale0.read_average(15));
+delay(100);
+scale1.set_gain(128);
+c1=(scale1.read_average(15));
+delay(100);
+scale1.set_gain(32);
+d1=(scale1.read_average(15));
+delay(100);
+scale2.set_gain(128);
+e1=(scale2.read_average(15));
+delay(100);
+scale2.set_gain(32);
+f1=(scale2.read_average(15));
+delay(100);
+scale3.set_gain(128);
+g1=(scale3.read_average(15));
+delay(100);
+scale3.set_gain(32);
+h1=(scale3.read_average(15));
+delay(100);
+scale4.set_gain(128);
+i1=(scale4.read_average(15));
+delay(100);
+scale4.set_gain(32);
+j1=(scale4.read_average(15));
+delay(100);
+scale5.set_gain(128);
+k1=(scale5.read_average(15));
+delay(100);
+scale5.set_gain(32);
+l1=(scale5.read_average(15));
+delay(100);
+scale6.set_gain(128);
+m1=(scale6.read_average(15));
+delay(100);
+scale6.set_gain(32);
+n1=(scale6.read_average(15));
+delay(100);
+scale7.set_gain(128);
+o1=(scale7.read_average(15));
+delay(100);
+scale7.set_gain(32);
+p1=(scale7.read_average(15));
+delay(100);
+scale8.set_gain(128);
+q1=(scale8.read_average(15));
+delay(100);
+scale8.set_gain(32);
+r1=(scale8.read_average(15));
+delay(100);
+scale9.set_gain(128);
+s1=(scale9.read_average(15));
+delay(100);
+scale9.set_gain(32);
+t1=(scale9.read_average(15));
+delay(100);
+scale10.set_gain(128);
+u1=(scale10.read_average(15));
+
+delay(200);
+do{
+int regua1b0 = ads_rr.readADC_SingleEnded(0);
+int regua2b0 = ads_rr.readADC_SingleEnded(1);
+int regua3b0 = ads_rr.readADC_SingleEnded(2);
+int regua4b0 = ads_rr.readADC_SingleEnded(3);
+
+//valr1 = valr1;
+//valr2 = valr2;
+//valr3 = valr3;
+//valr4 = valr4;
+
+x = x+1;
+}
+while (x<=200);
+
+for (x=201; x<=300;x++){ 
+int regua1b0 = ads_rr.readADC_SingleEnded(0);
+delay(5);
+int regua2b0 = ads_rr.readADC_SingleEnded(1);
+delay(5);
+int regua3b0 = ads_rr.readADC_SingleEnded(2);
+delay(5);
+int regua4b0 = ads_rr.readADC_SingleEnded(3);
+delay(5);
+
+valr1 = valr1 + regua1b0;
+valr2 = valr2 + regua2b0;
+valr3 = valr3 + regua3b0;
+valr4 = valr4 + regua4b0;
+}
+
+valrr1 = ((float)valr1/(100.0))*6.144/32768.0;
+valrr2 = ((float)valr2/(100.0))*6.144/32768.0;
+valrr3 = ((float)valr3/(100.0))*6.144/32768.0;
+valrr4 = ((float)valr4/(100.0))*6.144/32768.0;
+
+Serial.println("CLEARDATA"); 
+Serial.println("LABEL,Time,tempo,S1,S2,S3,S4,S5,S6,S7,S8,S9,S10,S11,S12,S13,S14,S15,S16,S17,S18,S19,S20,RE1(mm),RE2,RE3,RE4,INx1,INy1,INz1,INx2,INy2,INz2,CC(N)");
+Serial.print("DATA, TIME"); Serial.print(milli_time); Serial.print(a1);Serial.print(",");Serial.print(b1);Serial.print(",");Serial.print(c1);Serial.print(",");Serial.print(d1);Serial.print(",");Serial.print(e1);Serial.print(",");
+Serial.print(f1);Serial.print(",");Serial.print(g1);Serial.print(",");Serial.print(h1);Serial.print(",");Serial.print(i1);Serial.print(",");Serial.print(j1);Serial.print(",");
+Serial.print(k1);Serial.print(",");Serial.print(l1);Serial.print(",");Serial.print(m1);Serial.print(",");Serial.print(n1);Serial.print(",");Serial.print(o1);Serial.print(",");
+Serial.print(p1);Serial.print(",");Serial.print(q1);Serial.print(",");Serial.print(r1);Serial.print(",");Serial.print(s1);Serial.print(",");Serial.print(t1);Serial.print(",");
+Serial.print(valrr1,2);Serial.print(",");Serial.print(valrr2,2);Serial.print(",");Serial.print(valrr3,2);Serial.print(",");Serial.print(valrr4,2);Serial.print(",");
+Serial.print(arx1);Serial.print(",");Serial.print(ary1);Serial.print(",");Serial.print(arz1);Serial.print(","); 
+Serial.print(arx2);Serial.print(",");Serial.print(ary2);Serial.print(",");Serial.print(arz2);Serial.print(",");Serial.println(u1);
+}
+void loop()   
+{
+ milli_time=millis()/1000;
+ int regua1b = ads_rr.readADC_SingleEnded(0);
+ delay(1);
+ int regua2b = ads_rr.readADC_SingleEnded(1);
+ delay(1);
+ int regua3b = ads_rr.readADC_SingleEnded(2);
+ delay(1);
+ int regua4b = ads_rr.readADC_SingleEnded(3);
+ delay(1);
+float regua1 = (float)(regua1b * 6.144 / 32768.0 - valrr1)*46.767; /*constante Régua 1 fechamento considerando curso aberto inicialmente, em mm*/  
+ float regua2 = (float)(regua2b * 6.144 / 32768.0 - valrr2)*46.448;
+ float regua3 = (float)(regua3b * 6.144 / 32768.0 - valrr3)*46.563;
+ float regua4 = (float)(regua4b * 6.144 / 32768.0 - valrr4)*46.559;
+
+ scale0.set_gain(128);
+ a2=((scale0.read_average(4))-a1)*(0.685);                // scale0 canal A - Constante calibração saída M2a FRONT (S1) -1*NEWTON
+ a = (float)a2/100; 
+ delay(100);
+ scale0.set_gain(32); 
+ b2=(((scale0.read_average(4))-b1))*(-2.819);              // scale0 canal B - Constante calibração saída M2a FRONT (S2) -1*NEWTON
+ b = (float)b2/100;                              
+ delay(100);
+ scale1.set_gain(128); 
+ c2=((scale1.read_average(4))-c1)*(-0.67);                // scale1 canal C - Constante calibração saída M2a FRONT (S3) +1*NEWTON
+ c=(float)c2/100;                                 
+ delay(100);
+ scale1.set_gain(32); 
+ d2=((scale1.read_average(4))-d1)*(2.625);                // scale1 canal D - Constante calibração saída M2a FRONT (S4) +1*NEWTON
+ d=(float)d2/100;
+ delay(100);  
+ scale2.set_gain(128); 
+ e2=((scale2.read_average(4))-e1)*(-0.683);                // scale2 canal E - Constante calibração saída M2a FRONT (S5) +1*NEWTON
+ e=(float)e2/100;                              
+ delay(100);
+ scale2.set_gain(32); 
+ f2=((scale2.read_average(4))-f1)*(2.611);                // scale2 canal F - Constante calibração saída M2a FRONT (S56) +1*NEWTON
+ f=(float)f2/100;                               
+ delay(100); 
+ scale3.set_gain(128); 
+ g2=((scale3.read_average(4))-g1)*(0.629);                // scale3 canal G - Constante calibração saída M2a FRONT (S7) +1*NEWTON
+ g=(float)g2/100;                                
+ delay(100);
+ scale3.set_gain(32); 
+ h2=((scale3.read_average(4))-h1)*(-2.465);                // scale3 canal H - Constante calibração saída M2a FRONT (S8) -1*NEWTON
+ h=(float)h2/100;
+ delay(100); 
+ scale4.set_gain(128); 
+ i2=((scale4.read_average(4))-i1)*(-0.629);                // scale4 canal I - Constante calibração saída M2a FRONT (S9) -1*NEWTON
+ i=(float)i2/100;                               
+ delay(100);
+ scale4.set_gain(32); 
+ j2=((scale4.read_average(4))-j1)*(-2.815);                // scale4 canal J - Constante calibração saída M2a FRONT (S10) -1*NEWTON
+ j=(float)j2/100;                                 
+ delay(100); 
+ scale5.set_gain(128); 
+ k2=((scale5.read_average(4))-k1)*(-0.781);                // scale5 canal K - Constante calibração saída M2a BACK (S11) -1*NEWTON
+ k=(float)k2/100;                                 
+ delay(100);
+ scale5.set_gain(32); 
+ l2=((scale5.read_average(4))-l1)*(-2.757);                // scale5 canal L - Constante calibração saída M2a BACK (S12) +1*NEWTON
+ l=(float)l2/100;                                
+ delay(100); 
+ scale6.set_gain(128); 
+ m2=((scale6.read_average(4))-m1)*(0.689);                // scale6 canal M - Constante calibração saída M2a BACK (S13) +1*NEWTON
+ m=(float)m2/100;                                
+ delay(100);
+ scale6.set_gain(32); 
+ n2=((scale6.read_average(4))-n1)*(2.657);                // scale6 canal N - Constante calibração saída M2a BACK (S14) -1*NEWTON
+ n=(float)n2/100;                                 
+ delay(100);
+ scale7.set_gain(128); 
+ o2=((scale7.read_average(4))-o1)*(0.658);                // scale7 canal O - Constante calibração saída M2a BACK (S15) -1*NEWTON
+ o=(float)o2/100;                                 
+ delay(100);
+ scale7.set_gain(32); 
+ p2=((scale7.read_average(4))-p1)*(-3.141);                // scale7 canal P - Constante calibração saída M2a BACK (S16) -1*NEWTON
+ p=(float)p2/100;                                 
+ delay(100);
+ scale8.set_gain(128); 
+ q2=((scale8.read_average(4))-q1)*(-0.694);                // scale8 canal Q  - Constante calibração saída M2a BACK (S17) -1*NEWTON
+ q=(float)q2/100;                                 
+ delay(100);
+ scale8.set_gain(32); 
+ r2=((scale8.read_average(4))-r1)*(2.934);                // scale8 canal R - Constante calibração saída M2a BACK (S18) +1*NEWTON
+ r=(float)r2/100;                                
+ delay(100);
+ scale9.set_gain(128); 
+ s2=((scale9.read_average(4))-s1)*0.785;                // scale9 canal S - Constante calibração saída M2a BACK (S19) +1*NEWTON
+ s=(float)s2/100;                                
+ delay(100);
+ scale9.set_gain(32); 
+ t2=((scale9.read_average(4))-t1)*(-2.684);                // scale9 canal T  - Constante calibração saída M2a BACK (S20) -1*NEWTON
+ t=(float)t2/100;                                 
+ scale10.set_gain(128); 
+ u2=((scale10.read_average(4))-u1)*(1.184);       // scale9 canal U - Constante calibração CARGA em N!
+ u=(float)u2/100;                                 
+ delay(100);
+
+ Wire.beginTransmission(MPU1);
+ Wire.write(0x3B);           // starting with register 0x3B (ACCEL_XOUT_H)
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU1,6,true);     // request a total of 6 registers
+ 
+  AcX1=Wire.read()<<8|Wire.read();      // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)     
+  AcY1=Wire.read()<<8|Wire.read();      // 0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L)
+  AcZ1=Wire.read()<<8|Wire.read();      // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
+  
+  Wire.beginTransmission(MPU2);
+  Wire.write(0x3B);           // starting with register 0x3B (ACCEL_XOUT_H)
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU2,6,true);     // request a total of 6 registers
+  
+  AcX2=Wire.read()<<8|Wire.read();      // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)     
+  AcY2=Wire.read()<<8|Wire.read();      // 0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L)
+  AcZ2=Wire.read()<<8|Wire.read();      // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
+  
+// offset from MPU6050_calibration_MPU2.ino
+  AcX1 = AcX1 - 3444.0;
+  AcY1 = AcY1 + 1475.0;
+  AcZ1 = AcZ1 + 857.0;
+  AcX2 = AcX2 - 344.0;
+  AcY2 = AcY2 + 430.0;
+  AcZ2 = AcZ2 + 1194.0;
+
+  // calculate accelerometer angles
+    arx1 = (180.0/3.141592) * atan(AcY1 / sqrt(square(AcX1) + square(AcZ1))); 
+    ary1 = -(180.0/3.141592) * atan(AcX1 / sqrt(square(AcY1) + square(AcZ1)));
+    arz1 = (180.0/3.141592) * atan(sqrt(square(AcY1) + square(AcX1)) / AcZ1);
+       arx2 = (180.0/3.141592) * atan(AcY2 / sqrt(square(AcX2) + square(AcZ2))); 
+    ary2 = -(180.0/3.141592) * atan(AcX2 / sqrt(square(AcY2) + square(AcZ2)));
+    arz2 = (180.0/3.141592) * atan(sqrt(square(AcY2) + square(AcX2)) / AcZ2);
+
+ // formatação da saida 7 espaços e uma casa decimal 
+ dtostrf(a,7,1,aux);
+ dtostrf(b,7,1,bux);
+ dtostrf(c,7,1,cux);
+ dtostrf(d,7,1,dux);
+ dtostrf(e,7,1,eux);
+ dtostrf(f,7,1,fux);
+ dtostrf(g,7,1,gux);
+ dtostrf(h,7,1,hux);
+ dtostrf(i,7,1,iux);
+ dtostrf(j,7,1,jux);
+ dtostrf(k,7,1,kux);
+ dtostrf(l,7,1,lux);
+ dtostrf(m,7,1,mux);
+ dtostrf(n,7,1,nux);
+ dtostrf(o,7,1,oux);
+ dtostrf(p,7,1,pux);
+ dtostrf(q,7,1,qux);
+ dtostrf(r,7,1,rux);
+ dtostrf(s,7,1,sux);
+ dtostrf(t,7,1,tux);
+ dtostrf(u,7,1,uux);
+ delay(50); 
+ 
+ Serial.print("DATA,TIME,");Serial.print(milli_time);Serial.print(","); Serial.print(aux);Serial.print(",");Serial.print(bux);Serial.print(",");Serial.print(cux);Serial.print(","); Serial.print(dux);
+Serial.print(",");Serial.print(eux);Serial.print(",");Serial.print(fux);Serial.print(",");Serial.print(gux);Serial.print(",");Serial.print(hux);Serial.print(","); 
+ Serial.print(iux);Serial.print(",");Serial.print(jux);Serial.print(","); Serial.print(kux);Serial.print(",");Serial.print(lux);Serial.print(",");Serial.print(mux);
+Serial.print(",");Serial.print(nux);Serial.print(",");Serial.print(oux);Serial.print(",");Serial.print(pux);Serial.print(",");Serial.print(qux);Serial.print(",");
+ Serial.print(rux);Serial.print(",");Serial.print(sux);Serial.print(",");Serial.print(tux);Serial.print(",");
+Serial.print(regua1,5);Serial.print(",");Serial.print(regua2,5);Serial.print(",");Serial.print(regua3,5);Serial.print(",");Serial.print(regua4,5);Serial.print(",");
+ Serial.print(arx1);Serial.print(",");Serial.print(ary1);Serial.print(",");Serial.print(arz1);Serial.print(",");
+ Serial.print(arx2); Serial.print(",");Serial.print(ary2);Serial.print(",");Serial.print(arz2);Serial.print(","); Serial.println(uux);
+
+  string0 = ",";
+  string1 = String(milli_time);
+  string2 = String(aux);
+  string3 = String(bux);
+  string4 = String(cux);
+  string5 = String(dux);
+  string6 = String(eux);
+  string7 = String(fux);
+  string8 = String(gux);
+  string9 = String(hux);
+  string10 = String(iux);
+  string11 = String(jux);
+  string12 = String(kux);
+  string13 = String(lux);
+  string14 = String(mux);
+  string15 = String(nux);
+  string16 = String(oux);
+  string17 = String(pux);
+  string18 = String(qux);
+  string19 = String(rux);
+  string20 = String(sux);
+  string21 = String(tux);
+  string22 = String(regua1);
+  string23 = String(regua2);
+  string24 = String(regua3);
+  string25 = String(regua4);
+  string26 = String(arx1);
+  string27 = String(ary1); 
+  string28 = String(arz1);
+  string29 = String(arx2); 
+  string30 = String(ary2);
+  string31 = String(arz2); 
+  string32 = String(uux);
+  
+  //  compoe o string para gravar cartao
+string33=string1+string0+string2+string0+string3+string0+string4+string0+string5+string0+string6+string0+string7+string0;  
+string34=string8+string0+string9+string0+string10+string0+string11+string0+string12+string0+string13+string0+string14+string0; 
+string35=string15+string0+string16+string0+string17+string0+string18+string0+string19+string0+string20+string0+string21+string0;  string36=string22+string0+string23+string0+string24+string0+string25+string0+string26+string0+string27+string0+string28+string0+string29+string0+string30+string0+string31+string0+string32;
+  string37=string33+string34+string35+string36;
+  File meuArquivo=SD.open("dados.txt", FILE_WRITE);
+  if (meuArquivo) {
+     meuArquivo.println(string37);
+    meuArquivo.close();
+  } 
+} 
